@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EM.Calc.ConsoleApp")]
+[assembly: AssemblyTitle("EM.Calc.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EM.Calc.ConsoleApp")]
+[assembly: AssemblyProduct("EM.Calc.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("57c1edc0-05dd-4d93-a10e-a79eef1a4b45")]
+[assembly: Guid("197687b0-c6f3-4623-9310-19f69535feb4")]
 
 // Version information for an assembly consists of the following four values:
 //
