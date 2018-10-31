@@ -45,7 +45,7 @@
             // lblResult
             // 
             this.lblResult.AutoSize = true;
-            this.lblResult.Location = new System.Drawing.Point(9, 132);
+            this.lblResult.Location = new System.Drawing.Point(12, 152);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(59, 13);
             this.lblResult.TabIndex = 1;
@@ -66,6 +66,7 @@
             this.btnExec.TabIndex = 3;
             this.btnExec.Text = "Вычислить";
             this.btnExec.UseVisualStyleBackColor = true;
+            this.btnExec.Click += new System.EventHandler(this.btnExec_Click);
             // 
             // Form1
             // 
@@ -76,8 +77,12 @@
             this.Controls.Add(this.input);
             this.Controls.Add(this.lblResult);
             this.Controls.Add(this.cbOperation);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Калькулятор";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
