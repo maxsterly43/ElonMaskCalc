@@ -5,54 +5,52 @@ namespace EM.Calc.ConsoleApp
 {
     public class Program
     {
-        public enum cmds
-        {
-            sum = 0,
-            sub = 1,
-            pow = 2
-        }
         static void Main(string[] args)
         {
             try
             {
                 Core.Calc calc = new Core.Calc();
-                Console.WriteLine("Введите одну из операций: sum, sub, pow.\nПриемер: sum 5 3 2");
-                string[] input = Console.ReadLine().Split(' ');
-                cmds cm;
-                if (!Enum.TryParse(input[0], out cm)) throw new Exception("Некорректный ввод");
-                int[] arr = input.Skip(1).Select(x =>
+                string operation;
+                double[] operands;
+                if (args.Length == 0)
                 {
-                    int r;
-                    if (int.TryParse(x.ToString(), out r))
-                        return r;
-                    else
-                        throw new Exception("Некорректный ввод");
-                }).ToArray();
-                long res = 0;
-                switch (cm)
-                {
-                    case cmds.sum:
-                        res = calc.Sum(arr);
-                        break;
-
-                    case cmds.sub:
-                        res = calc.Sub(arr);
-                        break;
-                    case cmds.pow:
-                        res = calc.Pow(arr);
-                        break;
+                    Console.Write("Список операций:");
+                    foreach (var item in calc.GetOperationsName)
+                        Console.Write($" {item}");
+                    Console.Write("\nВведите операцию: ");
+                    operation = Console.ReadLine().ToLower().Trim();
+                    Console.Write("Введите аргументы через пробел: ");
+                    string[] input = Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    operands = convertToDouble(input);
                 }
-
-                Console.WriteLine(res);
+                else
+                {
+                    operation = args[0].ToLower().Trim();
+                    operands = convertToDouble(args, 1);
+                }
+                var res = calc.Execute(operation, operands);
+                if (res == null) throw new Exception("Введенная операция отсутствует.");
+                Console.WriteLine($"Результат операции: {res}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
             finally
-            {   
+            {
                 Console.ReadKey();
+                Console.Clear();
             }
+        }
+
+        private static double[] convertToDouble(string[] input, int i = 0)
+        {
+            double r;
+            return input.Skip(i).Select(x =>
+            {
+                if (double.TryParse(x.ToString(), out r)) return r;
+                else throw new Exception("Некорректный ввод списка чисел.");
+            }).ToArray();
         }
     }
 }

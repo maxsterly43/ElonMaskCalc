@@ -1,24 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace EM.Calc.Core
 {
     public class Calc
     {
-        public int Sum(int[] args)
+        private IList<IOperation> Operations { get; set; }
+        public string[] GetOperationsName => Operations.Select(i => i.Name).ToArray();
+        public Calc()
         {
-            return args.Sum();
+            Operations = new List<IOperation>();
+            findDllFiles();
         }
-        public int Sub(int[] args)
+
+        private void findDllFiles()
         {
-            return args.Select((item, j) => j > 0 ? -item : item).ToArray().Sum();
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            var dllFiles = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly);
+            foreach (var file in dllFiles)
+                FindOperations(Assembly.LoadFrom(file));
         }
-        public long Pow(int[] args)
+
+        private void FindOperations(Assembly assembly)
         {
-            double result = 0;
-            for (int j = 0; j < args.Length; j++)
-                result = j > 0 ? Math.Pow(result, args[j]) : args[j];
-            return Convert.ToInt64(result);
+            var types = assembly.GetTypes();
+            foreach (var item in types)
+            {
+                if (item.GetInterface("IOperation") != null)
+                {
+                    var instance = Activator.CreateInstance(item);
+                    var operation = instance as IOperation;
+                    if (operation != null)
+                        Operations.Add(operation);
+                }
+            }
         }
+
+        public double? Execute(string operation, double[] operands)
+        {
+            IOperation op = Operations.SingleOrDefault(i => i.Name == operation);
+            if (op != null)
+                op.Operands = operands;
+            return op?.Execute();
+        }
+
+        #region old function
+        [Obsolete("Существует новый функционал - Execute(\"sum\", operands)")]
+        public double? Sum(double[] args)
+        {
+            return Execute("sum", args);
+        }
+        [Obsolete("Существует новый функционал - Execute(\"sub\", operands)")]
+        public double? Sub(double[] args)
+        {
+            return Execute("sub", args);
+        }
+        [Obsolete("Существует новый функционал - Execute(\"pow\", operands)")]
+        public double? Pow(double[] args)
+        {
+            return Execute("pow", args);
+        }
+        #endregion
     }
 }
