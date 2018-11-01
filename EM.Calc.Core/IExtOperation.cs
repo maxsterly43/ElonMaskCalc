@@ -3,7 +3,7 @@
     /// <summary>
     /// Операция
     /// </summary>
-    public interface IExOperation : IOperation
+    public interface IExtOperation : IOperation
     {
         /// <summary>
         /// Уникальный идентификатор

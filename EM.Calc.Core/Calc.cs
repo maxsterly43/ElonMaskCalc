@@ -28,18 +28,17 @@ namespace EM.Calc.Core
         {
             var types = assembly.GetTypes();
             var needType = typeof(IOperation);
-            var notNeedType = typeof(IExOperation);
-            foreach (var item in types)
-            {
-                var interfaces = item.GetInterfaces();
-                if (interfaces.Contains(needType) && item != notNeedType)
-                {
-                    var instance = Activator.CreateInstance(item);
-                    var operation = instance as IOperation;
-                    if (operation != null)
-                        Operations.Add(operation);
-                }
-            }
+            foreach (var item in types.Where(t => t.IsClass && !t.IsAbstract))
+            { 
+                    var interfaces = item.GetInterfaces();
+                    if (interfaces.Contains(needType))
+                    {
+                        var instance = Activator.CreateInstance(item);
+                        var operation = instance as IOperation;
+                        if (operation != null)
+                            Operations.Add(operation);
+                    }
+                } 
         }
 
         public double? Execute(string operation, double[] operands)
