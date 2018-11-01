@@ -27,9 +27,12 @@ namespace EM.Calc.Core
         private void FindOperations(Assembly assembly)
         {
             var types = assembly.GetTypes();
+            var needType = typeof(IOperation);
+            var notNeedType = typeof(IExOperation);
             foreach (var item in types)
             {
-                if (item.GetInterface("IOperation") != null)
+                var interfaces = item.GetInterfaces();
+                if (interfaces.Contains(needType) && item != notNeedType)
                 {
                     var instance = Activator.CreateInstance(item);
                     var operation = instance as IOperation;

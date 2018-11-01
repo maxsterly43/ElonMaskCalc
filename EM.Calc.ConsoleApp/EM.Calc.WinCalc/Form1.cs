@@ -22,14 +22,31 @@ namespace EM.Calc.WinCalc
         {
             calc = new Core.Calc();
             cbOperation.Items.AddRange(calc.GetOperationsName);
+            cbOperation.SelectedIndex = 0;
         }
 
         private void btnExec_Click(object sender, EventArgs e)
         {
-            var values = input.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(Convert.ToDouble).ToArray();
-            var operation = cbOperation.Text;
-            var result = calc.Execute(operation, values);
-            lblResult.Text = $"{result}";
+            try
+            {
+                var values = input.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(Convert.ToDouble).ToArray();
+                var operation = cbOperation.Text;
+                var result = calc.Execute(operation, values);
+                lblResult.Text = $"{result}";
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void input_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if (!char.IsDigit(number) && number != 8 && number != 32)
+            {
+                e.Handled = true;
+            }
         }
     }
 }
