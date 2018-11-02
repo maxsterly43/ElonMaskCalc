@@ -3,13 +3,19 @@ using System.Linq;
 
 namespace EM.Calc.Core
 {
-    class PowOperation : IOperation
+    class PowOperation : IExtOperation
     {
         public string Name => "pow";
 
         public double[] Operands { get; set; }
 
         public double? Result { get; private set; }
+
+        public string Uid => throw new NotImplementedException();
+
+        public string Description => "Выполняет последовательное возведение в степень";
+
+        public int? ArgCout => 2;
 
         public double? Execute()
         {

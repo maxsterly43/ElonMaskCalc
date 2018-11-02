@@ -2,13 +2,19 @@
 
 namespace EM.Calc.Core
 {
-    class SubOperation : IOperation
+    class SubOperation : IExtOperation
     {
         public string Name => "sub";
 
         public double[] Operands { get; set; }
 
         public double? Result { get; private set; }
+
+        public string Uid => throw new System.NotImplementedException();
+
+        public string Description => "Выполняет последовательное вычитание";
+
+        public int? ArgCout => 2;
 
         public double? Execute()
         {
