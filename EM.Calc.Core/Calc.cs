@@ -19,26 +19,46 @@ namespace EM.Calc.Core
         private void findDllFiles()
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
-            var dllFiles = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly);
+            var dllFiles = Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories);
             foreach (var file in dllFiles)
-                FindOperations(Assembly.LoadFrom(file));
+            {
+                Assembly asm;
+                try
+                {
+                    asm = Assembly.LoadFrom(file);
+                }
+                catch
+                {
+                    asm = null;
+                }
+                if (asm != null)
+                    FindOperations(asm);
+            }
         }
 
         private void FindOperations(Assembly assembly)
         {
-            var types = assembly.GetTypes();
+            IEnumerable<Type> types;
+            try
+            {
+                types = assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                types = e.Types.Where(t => t != null);
+            }
             var needType = typeof(IOperation);
             foreach (var item in types.Where(t => t.IsClass && !t.IsAbstract))
-            { 
-                    var interfaces = item.GetInterfaces();
-                    if (interfaces.Contains(needType))
-                    {
-                        var instance = Activator.CreateInstance(item);
-                        var operation = instance as IOperation;
-                        if (operation != null)
-                            Operations.Add(operation);
-                    }
-                } 
+            {
+                var interfaces = item.GetInterfaces();
+                if (interfaces.Contains(needType))
+                {
+                    var instance = Activator.CreateInstance(item);
+                    var operation = instance as IOperation;
+                    if (operation != null)
+                        Operations.Add(operation);
+                }
+            }
         }
 
         public double? Execute(string operation, double[] operands)
