@@ -3,18 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using EM.Calc.Web.Models;
+
 
 namespace EM.Calc.Web.Controllers
 {
     public class CalcController : Controller
     {
+        Core.Calc calc;
 
-        Core.Calc calc = new Core.Calc();
-        public ActionResult Execute(string oper, string values)
+        public CalcController()
         {
-            double[] operands = values.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToDouble(i)).ToArray();
-            ViewBag.Result = calc.Execute(oper, operands);
+            calc = new Core.Calc();
+        }
+        public ActionResult Execute(string oper, double[] values)
+        {
+            return View(Calc(oper, values));
+        }
+
+        [HttpGet]
+        public ActionResult Input()
+        {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Input(InputModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+            if (!calc.GetOperationsName.Contains(model.Name))
+            {
+                ModelState.AddModelError("Name", "Такой операции нет");
+                return View(model);
+            }
+
+            var result = Calc(model.Name, model.values);
+            return View("Execute", result);
+        }
+
+        private OperationResult Calc(string oper, double[] values)
+        {
+            var result = calc.Execute(oper, values);
+            return new OperationResult() { Name = oper, Result = result };
         }
     }
 }

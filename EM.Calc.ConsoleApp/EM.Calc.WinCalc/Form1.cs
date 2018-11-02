@@ -34,7 +34,7 @@ namespace EM.Calc.WinCalc
                 var result = calc.Execute(operation, values);
                 lblResult.Text = $"{result}";
             }
-            catch (Exception ex)
+            catch
             {
 
             }

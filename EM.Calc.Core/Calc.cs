@@ -10,15 +10,15 @@ namespace EM.Calc.Core
     {
         private IList<IOperation> Operations { get; set; }
         public string[] GetOperationsName => Operations.Select(i => i.Name).ToArray();
-        public Calc()
+        public Calc() : this(AppDomain.CurrentDomain.BaseDirectory) { }
+        public Calc(string path)
         {
             Operations = new List<IOperation>();
-            findDllFiles();
+            findDllFiles(path);
         }
-
-        private void findDllFiles()
+        private void findDllFiles(string path)
         {
-            var path = AppDomain.CurrentDomain.BaseDirectory;
+            path = AppDomain.CurrentDomain.BaseDirectory;
             var dllFiles = Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories);
             foreach (var file in dllFiles)
             {
@@ -68,7 +68,6 @@ namespace EM.Calc.Core
                 op.Operands = operands;
             return op?.Execute();
         }
-
         #region old function
         [Obsolete("Существует новый функционал - Execute(\"sum\", operands)")]
         public double? Sum(double[] args)

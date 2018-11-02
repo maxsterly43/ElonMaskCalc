@@ -1,9 +1,11 @@
-﻿
+﻿@using EM.Calc.Web.Models
+@model OperationResult
+
 @{
     ViewBag.Title = "Execute";
 }
 
-<h2>Результат операции: @ViewBag.Result</h2>
+<h2>Результат операции @Model.Name: @Model.Result</h2>
 
 
 
