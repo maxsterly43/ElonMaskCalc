@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using EM.Calc.Web.Models;
 
-
 namespace EM.Calc.Web.Controllers
 {
     public class CalcController : Controller
@@ -16,6 +15,7 @@ namespace EM.Calc.Web.Controllers
         {
             calc = new Core.Calc();
         }
+
         public ActionResult Execute(string oper, double[] values)
         {
             return View(Calc(oper, values));
@@ -24,22 +24,22 @@ namespace EM.Calc.Web.Controllers
         [HttpGet]
         public ActionResult Input()
         {
-            return View();
+            return View(new InputModel { Operations = calc.Operations });
         }
 
         [HttpPost]
-        public ActionResult Input(InputModel model)
+        public PartialViewResult Input(InputModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+                return null;
             if (!calc.GetOperationsName.Contains(model.Name))
             {
                 ModelState.AddModelError("Name", "Такой операции нет");
-                return View(model);
+                return null;
             }
 
             var result = Calc(model.Name, model.values);
-            return View("Execute", result);
+            return PartialView("Execute", result);
         }
 
         private OperationResult Calc(string oper, double[] values)

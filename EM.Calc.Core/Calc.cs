@@ -8,7 +8,7 @@ namespace EM.Calc.Core
 {
     public class Calc
     {
-        private IList<IOperation> Operations { get; set; }
+        public IList<IOperation> Operations { get; set; }
         public string[] GetOperationsName => Operations.Select(i => i.Name).ToArray();
         public Calc() : this(AppDomain.CurrentDomain.BaseDirectory) { }
         public Calc(string path)
