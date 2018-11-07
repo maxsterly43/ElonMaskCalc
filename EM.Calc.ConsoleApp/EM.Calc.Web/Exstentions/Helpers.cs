@@ -8,9 +8,10 @@ namespace EM.Calc.Web.Exstentions
 {
     public static class Helpers
     {
-        public static MvcHtmlString SuperButton(this HtmlHelper htmlHelper)
-        {
-            return new MvcHtmlString("<input =\"button\" value=\"Super\" />");
+        public static MvcHtmlString SuperButton(this HtmlHelper htmlHelper, string text, string onclick)
+        {  
+            return new MvcHtmlString($"<input type = \"button\" value = \"{text}\" onclick = \"{onclick}\" class=\"btn btn - default\" />");
         }
+
     }
 }

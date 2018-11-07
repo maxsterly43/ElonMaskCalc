@@ -10,7 +10,7 @@ namespace EM.Calc.Core
 
         public double? Result { get; private set; }
 
-        public string Uid => throw new System.NotImplementedException();
+        public string Uid => "{B0D62669-43BE-45D9-A429-CBD8AF4FEAFB}";
 
         public string Description => "Выполняет последовательное вычитание";
 

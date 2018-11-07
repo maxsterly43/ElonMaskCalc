@@ -11,7 +11,7 @@ namespace EM.Calc.Core
 
         public double? Result { get; private set; }
 
-        public string Uid => throw new NotImplementedException();
+        public string Uid => "{28FC44F5-A6EA-498E-B960-F6AAD64E138E}";
 
         public string Description => "Выполняет последовательное возведение в степень";
 

@@ -2,7 +2,7 @@
 @using EM.Calc.Web.Exstentions
 
 @{
-    ViewBag.Title = "Давайте посчитаем";
+    ViewBag.Title = "Калькулятор";
     var operations = Model.Operations.Select(o => new SelectListItem() { Text = o.Name, Value = o.Name });
 }
 
@@ -33,8 +33,25 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Рассчитать" class="btn btn-default" />
+                @Html.SuperButton("Вычислить", "AsyncCalc()")
             </div>
         </div>
     </div>
 }
+
+<div id="result">
+
+</div>
+<script>
+    function AsyncCalc() {
+        $.ajax({
+            url: '@Url.Action("Input", "Calc")',
+            type: 'POST',
+            cache: false,
+            data: $("#calcForm").serializeArray(),
+            success: function (result) {
+                $("#result").html(result)
+            }
+        });
+    }
+</script> 
