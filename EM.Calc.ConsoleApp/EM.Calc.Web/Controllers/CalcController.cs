@@ -37,7 +37,6 @@ namespace EM.Calc.Web.Controllers
                 ModelState.AddModelError("Name", "Такой операции нет");
                 return null;
             }
-
             var result = Calc(model.Name, model.values);
             return PartialView("Execute", result);
         }
